@@ -43,6 +43,13 @@ Expectations do
     errors.full_messages.sort
   end
   
+  expect ["something here", "Translate me Not found"] do
+    errors = Validatable::Errors.new
+    errors.add(:translate_me, :not_found)
+    errors.add(:base, "something here")
+    errors.full_messages
+  end
+  
   expect true do
     Validatable::Errors.included_modules.include?(Enumerable)
   end

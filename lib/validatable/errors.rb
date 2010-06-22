@@ -88,6 +88,15 @@ module Validatable
       errors.each_key do |attribute|
         errors[attribute].each do |msg|
           next if msg.nil?
+          
+          # Try for a translation in locale files
+          if msg.is_a? Symbol
+            if Object.const_defined? "I18n" # Not all places this is used will include I18n support
+              msg = I18n.t msg, :scope => [:errors, :messages], :default => humanize(msg.to_s)
+            else
+              msg = humanize(msg.to_s)
+            end
+          end
 
           if attribute.to_s == "base"
             full_messages << msg
