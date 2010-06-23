@@ -50,6 +50,19 @@ Expectations do
     errors.full_messages
   end
   
+  expect ["something here", "Translate me Alles Klar"] do
+    class I18n # Shim for the I18n class provided by rails
+      def self.t(symbol, *kersplat)
+        "Alles Klar"
+      end
+    end
+    
+    errors = Validatable::Errors.new
+    errors.add(:translate_me, :not_found)
+    errors.add(:base, "something here")
+    errors.full_messages
+  end
+  
   expect true do
     Validatable::Errors.included_modules.include?(Enumerable)
   end
